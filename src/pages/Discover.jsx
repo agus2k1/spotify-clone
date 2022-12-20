@@ -7,8 +7,6 @@ const Discover = () => {
   const { data, isFetching, error } = useGetTopChartsQuery();
   const chart = data.response.chart_items;
 
-  console.log(data.response.chart_items);
-
   if (isFetching) return <Loader title="Loading songs..." />;
 
   if (error) return <Error />;
@@ -36,7 +34,9 @@ const Discover = () => {
       </div>
       <div className="flex flex-wrap sm:justify-start justify-center gap-8">
         {chart?.map((song, index) => {
-          return <SongCard key={song.key} song={song} i={index} />;
+          const data = song.item;
+
+          return <SongCard key={data.id} data={data} i={index} />;
         })}
       </div>
     </div>

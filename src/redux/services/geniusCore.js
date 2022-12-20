@@ -15,7 +15,7 @@ export const geniusCoreApi = createApi({
   }),
   endpoints: (builder) => ({
     getTopCharts: builder.query({
-      query: () => "/chart?time_period=day&chart_genre=all&per_page=50&page=1",
+      query: () => "/chart?chart_genre=all&per_page=50&page=1",
     }),
   }),
 });
