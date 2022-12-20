@@ -1,11 +1,16 @@
 import { Error, Loader, SongCard } from "../components";
 import { genres } from "../assets/constants";
 import { useGetTopChartsQuery } from "../redux/services/geniusCore";
+import { useDispatch, useSelector } from "react-redux";
+import { retry } from "@reduxjs/toolkit/dist/query";
 
 const Discover = () => {
-  const genreTitle = "Pop";
+  const dispatch = useDispatch();
+  const { activeSong, isPlaying } = useSelector((state) => state.player);
+
   const { data, isFetching, error } = useGetTopChartsQuery();
-  const chart = data.response.chart_items;
+
+  const genreTitle = "Pop";
 
   if (isFetching) return <Loader title="Loading songs..." />;
 
@@ -33,11 +38,22 @@ const Discover = () => {
         </select>
       </div>
       <div className="flex flex-wrap sm:justify-start justify-center gap-8">
-        {chart?.map((song, index) => {
-          const data = song.item;
+        {data &&
+          data.response.chart_items.map((subData, index) => {
+            const allData = subData;
+            const song = subData.item;
 
-          return <SongCard key={data.id} data={data} i={index} />;
-        })}
+            return (
+              <SongCard
+                key={song.id}
+                song={song}
+                data={allData}
+                i={index}
+                activeSong={activeSong}
+                isPlaying={isPlaying}
+              />
+            );
+          })}
       </div>
     </div>
   );
