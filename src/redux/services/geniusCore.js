@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const geniusCoreApi = createApi({
   reducerPath: "geniusCoreApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://genius-song-lyrics1.p.rapidapi.com/songs", // might need to be changed
+    baseUrl: "https://genius-song-lyrics1.p.rapidapi.com", // might need to be changed
     prepareHeaders: (headers) => {
       headers.set(
         "X-RapidAPI-Key",
@@ -15,9 +15,12 @@ export const geniusCoreApi = createApi({
   }),
   endpoints: (builder) => ({
     getTopCharts: builder.query({
-      query: () => "/chart?chart_genre=all&per_page=50&page=1",
+      query: () => "/songs/chart?chart_genre=all&per_page=50&page=1",
+    }),
+    getSongDetails: builder.query({
+      query: (songid) => `/songs/${songid}/lyrics`,
     }),
   }),
 });
 
-export const { useGetTopChartsQuery } = geniusCoreApi;
+export const { useGetTopChartsQuery, useGetSongDetailsQuery } = geniusCoreApi;

@@ -35,7 +35,9 @@ const TopChartCard = ({
             <p className="text-xl font-bold text-white">{title}</p>
           </Link>
           <Link to={artistURL}>
-            <p className="text-base text-gray-300 mt-1">{artist}</p>
+            <p className="text-base text-gray-300 mt-1 hover:underline">
+              {artist}
+            </p>
           </Link>
         </div>
       </div>
@@ -57,7 +59,7 @@ const TopPlay = () => {
   const divRef = useRef(null);
 
   const topPlays = data?.response.chart_items.slice(0, 5);
-  // console.log(topPlays);
+  console.log(topPlays);
 
   useEffect(() => {
     divRef.current.scrollIntoView({ behavior: "smooth" });
