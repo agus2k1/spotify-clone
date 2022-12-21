@@ -11,11 +11,41 @@ import { useGetTopChartsQuery } from "../redux/services/geniusCore";
 import "swiper/css";
 import "swiper/css/free-mode";
 
-const TopChartCard = ({ song, i }) => {
-  const title = song.item.title;
+const TopChartCard = ({
+  song,
+  i,
+  isPlaying,
+  activeSong,
+  handlePauseClick,
+  handlePlayClick,
+}) => {
+  const title = song.title;
+  const artist = song.artist_names;
+  const songImage = song.header_image_thumbnail_url;
+  const songURL = song.api_path;
+  const artistURL = song.primary_artist.api_path;
+
   return (
     <div className="w-full flex flex-row items-center hover:bg-[#4c426e] py-2 p-4 rounded-lg cursor-pointer mb-2">
-      {title}
+      <h3 className="font-bold text-base text-white mr-3 ">{i + 1}.</h3>
+      <div className="flex-1 flex flex-row justify-between items-center">
+        <img src={songImage} alt={title} className="w-20 h-20 rounded-lg" />
+        <div className="flex-1 flex flex-col justify-center mx-3">
+          <Link to={songURL}>
+            <p className="text-xl font-bold text-white">{title}</p>
+          </Link>
+          <Link to={artistURL}>
+            <p className="text-base text-gray-300 mt-1">{artist}</p>
+          </Link>
+        </div>
+      </div>
+      <PlayPause
+        song={song}
+        isPlaying={isPlaying}
+        activeSong={activeSong}
+        handlePause={handlePauseClick}
+        handlePlay={handlePlayClick}
+      />
     </div>
   );
 };
@@ -27,7 +57,7 @@ const TopPlay = () => {
   const divRef = useRef(null);
 
   const topPlays = data?.response.chart_items.slice(0, 5);
-  console.log(topPlays);
+  // console.log(topPlays);
 
   useEffect(() => {
     divRef.current.scrollIntoView({ behavior: "smooth" });
@@ -37,8 +67,8 @@ const TopPlay = () => {
     dispatch(playPause(false));
   };
 
-  const handlePlayClick = () => {
-    dispatch(setActiveSong({ data, song, i }));
+  const handlePlayClick = (song, i) => {
+    dispatch(setActiveSong({ song, data, i }));
     dispatch(playPause(true));
   };
 
@@ -57,8 +87,19 @@ const TopPlay = () => {
         <div className="mt-4 flex flex-col gap-1">
           {topPlays &&
             topPlays.map((song, index) => {
-              const id = song.item.id;
-              return <TopChartCard key={id} song={song} i={index} />;
+              const actualSong = song.item;
+
+              return (
+                <TopChartCard
+                  key={index}
+                  song={actualSong}
+                  i={index}
+                  isPlaying={isPlaying}
+                  activeSong={activeSong}
+                  handlePauseClick={handlePauseClick}
+                  handlePlayClick={() => handlePlayClick(actualSong, index)}
+                />
+              );
             })}
         </div>
       </div>
@@ -82,19 +123,18 @@ const TopPlay = () => {
         >
           {topPlays &&
             topPlays.map((song, index) => {
-              const id = song.item.id;
-              const artistPage = song.item.primary_artist.api_path;
-              const artistImg = song.item.primary_artist.image_url;
+              const artistURL = song.item.primary_artist.api_path;
+              const artistImage = song.item.primary_artist.image_url;
 
               return (
                 <SwiperSlide
-                  key={id}
+                  key={index}
                   style={{ width: "25%", height: "auto" }}
                   className="shadow-lg rounded-full animate-slideright"
                 >
-                  <Link to={artistPage}>
+                  <Link to={artistURL}>
                     <img
-                      src={artistImg}
+                      src={artistImage}
                       alt="artist"
                       className="rounded-full w-full object-cover"
                     />
