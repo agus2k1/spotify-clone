@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import PlayPause from "./PlayPause";
 import { playPause, setActiveSong } from "../redux/features/playerSlice";
 
-const SongCard = ({ song, data, list, i, activeSong, isPlaying }) => {
+const SongCard = ({ song, data, i, activeSong, isPlaying }) => {
   const dispatch = useDispatch();
 
   const handlePauseClick = () => {
