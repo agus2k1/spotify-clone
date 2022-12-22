@@ -7,7 +7,7 @@ export const geniusCoreApi = createApi({
     prepareHeaders: (headers) => {
       headers.set(
         "X-RapidAPI-Key",
-        "c38a14167fmshd9ed68d9c71a01fp139d53jsn0bfc59735542"
+        import.meta.env.VITE_SHAZAM_CORE_RAPID_API_KEY
       );
 
       return headers;
@@ -20,7 +20,14 @@ export const geniusCoreApi = createApi({
     getSongDetails: builder.query({
       query: (songid) => `/songs/${songid}/lyrics`,
     }),
+    getSongRelated: builder.query({
+      query: (songid) => `/artists/${songid}/songs`,
+    }),
   }),
 });
 
-export const { useGetTopChartsQuery, useGetSongDetailsQuery } = geniusCoreApi;
+export const {
+  useGetTopChartsQuery,
+  useGetSongDetailsQuery,
+  useGetSongRelatedQuery,
+} = geniusCoreApi;

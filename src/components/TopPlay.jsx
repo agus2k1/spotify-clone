@@ -59,7 +59,7 @@ const TopPlay = () => {
   const divRef = useRef(null);
 
   const topPlays = data?.response.chart_items.slice(0, 5);
-  console.log(topPlays);
+  // console.log(topPlays);
 
   useEffect(() => {
     divRef.current.scrollIntoView({ behavior: "smooth" });
