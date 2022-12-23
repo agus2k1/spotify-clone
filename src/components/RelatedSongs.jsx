@@ -8,7 +8,7 @@ const RelatedSongs = ({
   handlePlay,
   artistId,
 }) => {
-  const songs = data?.response.songs;
+  const songs = data?.response.chart_items;
 
   console.log(songs);
 
@@ -16,13 +16,13 @@ const RelatedSongs = ({
     <div className="flex flex-col">
       <h1 className="font-bold text-3xl text-white">Related Songs:</h1>
       <div className="mt-6 w-full flex flex-col">
-        {songs.map((song, i) => {
+        {/* {songs.map((song, i) => {
           console.log(song);
 
           return (
             <SongBar
-              key={`${song.id}`}
-              song={song}
+              key={`${song.item.id}`}
+              song={song.item}
               i={i}
               artistId={artistId}
               isPlaying={isPlaying}
@@ -31,7 +31,7 @@ const RelatedSongs = ({
               handlePlay={handlePlay}
             />
           );
-        })}
+        })} */}
       </div>
     </div>
   );

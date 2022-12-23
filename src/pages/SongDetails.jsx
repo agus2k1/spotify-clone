@@ -22,11 +22,13 @@ const SongDetails = () => {
   );
   const artistId = chartData?.item.primary_artist.id;
 
+  const songGenre = songData?.response?.lyrics?.tracking_data.primary_tag;
+
   const {
-    data: artistSongs,
+    data: songsRelatedData,
     isFetching: isFetchingRelatedSongs,
     error,
-  } = useGetSongRelatedQuery(artistId);
+  } = useGetSongRelatedQuery(songGenre);
 
   const handlePauseClick = () => {
     dispatch(playPause(false));
@@ -43,8 +45,7 @@ const SongDetails = () => {
 
   if (error) return <Error />;
 
-  // console.log(chartData);
-  // console.log(artistSongs);
+  console.log(songsRelatedData);
 
   return (
     <div className="flex flex-col">
@@ -74,14 +75,14 @@ const SongDetails = () => {
         </div>
       </div>
 
-      <RelatedSongs
-        data={artistSongs}
+      {/* <RelatedSongs
+        data={songsRelatedData}
         isPlaying={isPlaying}
         activeSong={activeSong}
         handlePause={handlePauseClick}
         handlePlay={handlePlayClick}
         artistId={artistId}
-      />
+      /> */}
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { matchPath } from "react-router-dom";
 
 export const geniusCoreApi = createApi({
   reducerPath: "geniusCoreApi",
@@ -17,12 +18,16 @@ export const geniusCoreApi = createApi({
     getTopCharts: builder.query({
       query: () => "/songs/chart?chart_genre=all&per_page=50&page=1",
     }),
+    getSongRelated: builder.query({
+      query: (genre = "all", page = Math.floor(Math.random() * 10)) =>
+        `/songs/chart?chart_genre=${genre}&per_page=15&page=${page}`,
+    }),
     getSongDetails: builder.query({
       query: (songid) => `/songs/${songid}/lyrics`,
     }),
-    getSongRelated: builder.query({
-      query: (songid) => `/artists/${songid}/songs`,
-    }),
+    // getSongRelated: builder.query({
+    //   query: (songid) => `/artists/${songid}/songs`,
+    // }),
   }),
 });
 
