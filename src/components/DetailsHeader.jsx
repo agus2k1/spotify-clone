@@ -5,7 +5,7 @@ const DetailsHeader = ({ artistId, artistData, songData, chartData }) => {
   const songTitle = chartData?.item.title;
   const songGenre = songData?.response?.lyrics?.tracking_data.primary_tag;
   const songGenreToUpperCase =
-    songGenre.charAt(0).toUpperCase() + songGenre.slice(1);
+    songGenre?.charAt(0).toUpperCase() + songGenre?.slice(1);
   const artistName = chartData?.item.artist_names;
   const artistImage = chartData?.item.primary_artist.image_url;
   const idURL = chartData?.item.primary_artist.id;
@@ -31,7 +31,9 @@ const DetailsHeader = ({ artistId, artistData, songData, chartData }) => {
             </Link>
           )}
 
-          <p className="text-base text-gray-400 mt-2">{songGenreToUpperCase}</p>
+          <p className="text-base text-gray-400 mt-2">
+            {songGenreToUpperCase ? songGenreToUpperCase : songGenre}
+          </p>
         </div>
       </div>
 

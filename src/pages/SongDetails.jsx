@@ -10,26 +10,41 @@ import {
 } from "../redux/services/geniusCore";
 
 const SongDetails = () => {
-  const { data: chart } = useGetTopChartsQuery();
   const dispatch = useDispatch();
   const { activeSong, isPlaying } = useSelector((state) => state.player);
   const songid = useParams().songid;
+  const { data: chart } = useGetTopChartsQuery();
   const { data: songData, isFetching: isFetchingSongDetails } =
     useGetSongDetailsQuery(songid);
-
-  // const {
-  //   artistSongs,
-  //   isFetching: isFetchingRelatedSongs,
-  //   error,
-  // } = useGetSongRelatedQuery(2);
 
   const chartData = chart?.response.chart_items.find(
     (item) => item.item.id == songid
   );
+  const artistId = chartData?.item.primary_artist.id;
 
-  // const artistSongsData = artistSongs?.response;
+  const {
+    data: artistSongs,
+    isFetching: isFetchingRelatedSongs,
+    error,
+  } = useGetSongRelatedQuery(artistId);
 
-  console.log(chartData);
+  const handlePauseClick = () => {
+    dispatch(playPause(false));
+  };
+
+  const handlePlayClick = (song, i) => {
+    dispatch(setActiveSong({ song, data, i }));
+    dispatch(playPause(true));
+  };
+
+  if (isFetchingSongDetails || isFetchingRelatedSongs) {
+    return <Loader title="Searching song details" />;
+  }
+
+  if (error) return <Error />;
+
+  // console.log(chartData);
+  // console.log(artistSongs);
 
   return (
     <div className="flex flex-col">
@@ -59,7 +74,14 @@ const SongDetails = () => {
         </div>
       </div>
 
-      <RelatedSongs />
+      <RelatedSongs
+        data={artistSongs}
+        isPlaying={isPlaying}
+        activeSong={activeSong}
+        handlePause={handlePauseClick}
+        handlePlay={handlePlayClick}
+        artistId={artistId}
+      />
     </div>
   );
 };
